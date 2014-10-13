@@ -1,0 +1,14 @@
+*** Settings ***
+Suite Setup       Go to login
+Suite Teardown    Close All Browsers
+Library           Selenium2Library
+Resource          testdata.txt
+Resource          resource.txt
+
+*** Test Cases ***
+View, Update and Delete Results
+    Logging IN
+    Deleting Patient Record
+    Confirm Action
+    Viewing Patient Record
+    Updating Patient Record

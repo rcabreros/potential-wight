@@ -1,0 +1,11 @@
+*** Settings ***
+Suite Setup       Go to login
+Suite Teardown    Close All Browsers
+Library           Selenium2Library
+Resource          resource.txt
+Resource          testdata.txt
+
+*** Test Cases ***
+Inputting Patient Details
+    Logging IN
+    Input 10 Patients

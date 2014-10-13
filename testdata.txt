@@ -1,0 +1,19 @@
+*** Variables ***
+${url_login}      http://goo.gl/b0MlpW
+${browser}        ff
+${username}       score.tester
+${password}       Adm1n *PW 1001
+${input_username}    //*[@id="user_login"]
+${input_pass}     //*[@id="user_password"]
+${button_login}    //*[@id="submit"]/button/span
+@{login_page}     Gebruikersnaam    Wachtwoord    Login Caresharing
+@{link_list}      //*[@id="help_options_area"]/div[1]/a[1]    //*[@id="email_link"]    //*[@id="help_options_area"]/div[2]/a
+@{input_box}      //*[@id="search_name"]    //*[@id="risk_data_patient_name"]    //*[@id="risk_data_patient_dob"]    //*[@id="risk_data_score_comment"]
+@{top_header}     //*[@id="helpy_widget_link"]/img    //*[@id="omnibar_settings_link"]/img    //*[@id="session_links"]/ul/li[1]/a/img    //*[@id="apps_launcher"]
+@{text_list}      Hart-vaatziekten:    Leeftijd:    Geslacht:    Bloeddruk systol.:    Cholesterol    Hdl-cholesterol:    Roken:
+...               Diabetes:    Reuma:
+@{error_msg}      Gebruikersnaam/Wachtwoord is niet juist    Vul svp alle velden in    username only    no username and password    Vul a.u.b. eerst alle gegevens in het formulier in.
+${more_than_30}    1234567890123456789012345678901234567890
+@{input_numOnly}    //*[@id="risk_data_age"]    //*[@id="risk_data_systolisch"]    //*[@id="risk_data_cholesterol"]    //*[@id="risk_data_hdl"]
+@{patient_list}    Patient1    Patient2    Patient3    Patient4    Patient5    Patient6    Patient7
+...               Patient8    Patient9    Patient10

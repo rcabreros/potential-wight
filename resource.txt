@@ -1,0 +1,196 @@
+*** Keywords ***
+Go to login
+    Open Browser    ${url_login}    ${browser}
+    Maximize Browser Window
+
+Check Text on Page
+    [Arguments]    ${text}
+    Page Should Contain    ${text}
+
+Check Button on Page
+    [Arguments]    ${Xpath}    ${count}
+    Xpath Should Match X Times    ${Xpath}    ${count}
+
+Check Radio Button on Page
+    [Arguments]    ${radiobutton}
+    Page Should Contain Radio Button    ${radiobutton}
+
+Check Elements on Page
+    [Arguments]    ${Xpath}    ${count}
+    Xpath Should Match X Times    ${Xpath}    ${count}
+
+Check Checkbox on Page
+    [Arguments]    ${checkbox}
+    Page Should Contain Checkbox    ${checkbox}
+
+Checking Login UI
+    Check Elements on Page    ${input_username}    1
+    Check Elements on Page    ${input_pass}    1
+    Check Button on Page    ${button_login}    1
+    : FOR    ${ELEMENT}    IN    @{login_page}
+    \    Check Text on Page    ${ELEMENT}
+    : FOR    ${ELEMENT}    IN    @{link_list}
+    \    Check Elements on Page    ${ELEMENT}    1
+
+Logging IN
+    Input Text    ${input_username}    ${username}
+    Input Password    ${input_pass}    ${password}
+    Click Element    ${button_login}
+
+Checking InputBox
+    Sleep    10
+    : FOR    ${ELEMENT}    IN    @{input_box}
+    \    Check Elements on Page    ${ELEMENT}    1
+
+Checking Heart Elements
+    Check Elements on Page    //*[@id="hvz"]/a/img    1
+    Check Radio Button on Page    //*[@id="risk_data_heart_disease_yes"]
+    Check Radio Button on Page    //*[@id="risk_data_heart_disease_no"]
+
+Checking Age Elements
+    Check Elements on Page    //*[@id="risk_data_age"]    1
+
+Checking Gender Elements
+    Check Radio Button on Page    //*[@id="risk_data_gender_m"]
+    Check Radio Button on Page    //*[@id="risk_data_gender_f"]
+
+Checking BP Elements
+    Check Elements on Page    //*[@id="risk_data_systolisch"]    1
+
+Checking Cholesterol Elements
+    Check Elements on Page    //*[@id="risk_data_cholesterol"]    1
+
+Checking Choles_HDL Elements
+    Check Elements on Page    //*[@id="risk_data_hdl"]    1
+
+Checking Smoking Elements
+    Check Radio Button on Page    //*[@id="risk_data_roken_1"]
+    Check Radio Button on Page    //*[@id="risk_data_roken_0"]
+
+Checking Diabetes Elements
+    Check Radio Button on Page    //*[@id="risk_data_diabetic_1"]
+    Check Radio Button on Page    //*[@id="risk_data_diabetic_0"]
+
+Checking Rheumatic Elements
+    Check Radio Button on Page    //*[@id="risk_data_rheumatic_1"]
+    Check Radio Button on Page    //*[@id="risk_data_rheumatic_0"]
+
+Checking Top Elements
+    : FOR    ${ELEMENT}    IN    @{top_header}
+    \    Check Elements on Page    ${ELEMENT}    1
+
+Checking Main Texts
+    : FOR    ${ELEMENT}    IN    @{text_list}
+    \    Check Text on Page    ${ELEMENT}
+
+Checking Risicometer UI
+    Checking InputBox
+    Check Button on Page    //*[@id="new_score_link"]    1
+    Check Button on Page    //*[@id="submit_score_form"]/input[1]    1
+    Checking Top Elements
+    Checking Main Texts
+    Checking Heart Elements
+    Checking Age Elements
+    Checking Gender Elements
+    Checking BP Elements
+    Checking Cholesterol Elements
+    Checking Choles_HDL Elements
+    Checking Smoking Elements
+    Checking Diabetes Elements
+    Checking Rheumatic Elements
+
+Logging out
+    Click Element    @{top_header}[2]
+
+Input Password Only
+    Input Password    ${input_pass}    ${password}
+    Click Element    ${button_login}
+    sleep    4
+    Check Elements on Page    //*[@id='cui_dialog_0']//*[@class='cui_dialog_content_wrapper' and .='@{error_msg}[1]']    1
+
+Incorrect Username/Password
+    Input Text    ${input_username}    dd
+    Input Password    ${input_pass}    dd
+    Click Element    ${button_login}
+    sleep    4
+    Check Elements on Page    //*[@id='cui_dialog_0']//*[@class='cui_dialog_content_wrapper' and .='@{error_msg}[0]']    1
+
+Input Username Only
+    Input Text    ${input_username}    dd
+    Click Element    ${button_login}
+    sleep    4
+    Check Elements on Page    //*[@id='cui_dialog_0']//*[@class='cui_dialog_content_wrapper' and .='@{error_msg}[2]']    1
+
+No Username/Password
+    Click Element    ${button_login}
+    sleep    4
+    Check Elements on Page    //*[@id='cui_dialog_0']//*[@class='cui_dialog_content_wrapper' and .='@{error_msg}[3]']    1
+
+Get Input Value
+    [Arguments]    ${to_check}
+    ${value} =    Get Value    ${to_check}
+    [Return]    ${value}
+
+Check Username Length
+    Input Text    ${input_username}    ${more_than_30}
+    ${value}=    Get Input Value    ${input_username}
+    Length Should Be    ${value}    30
+
+Check Password Length
+    Input Password    ${input_pass}    ${more_than_30}
+    ${value}=    Get Input Value    ${input_pass}
+    Length Should Be    ${value}    30
+
+Check SearchName Length
+    Input Text    @{input_box}[0]    ${more_than_30}
+    ${value}=    Get Input Value    @{input_box}[0]
+    Length Should Be    ${value}    30
+
+Checking Numbers Only Field
+    : FOR    ${ELEMENT}    IN    @{input_numOnly}
+    \    Input Text    ${ELEMENT}    def
+    \    ${value} =    Get Input Value    ${ELEMENT}
+    \    Should Be Empty    ${value}
+
+Pressing Back Key
+    Go Back
+    Title Should Be    SCORE risicometer
+
+Increment Value
+    [Arguments]    ${num}
+    ${value} =    Evaluate    int(${num}+1)
+    [Return]    ${value}
+
+Download Result
+    Click Image    //*[@id="risk_result_print_button"]/a/img
+
+Input 10 Patients
+    ${value} =    Evaluate    int(39)
+    : FOR    ${ELEMENT}    IN    @{patient_list}
+    \    Input Text    @{input_box}[1]    ${ELEMENT}
+    \    ${value} =    Increment Value    ${value}
+    \    Input Text    @{input_numOnly}[0]    ${value}
+    \    Input Text    @{input_numOnly}[1]    3
+    \    Input Text    @{input_numOnly}[2]    4
+    \    Input Text    @{input_numOnly}[3]    5
+    \    Click Element    //*[@id="submit_score_form"]/input[1]
+    \    Wait Until Element Is Visible    //*[@id="main_chart" and @style="display: inline;"]
+    \    Click Element    //*[@id="new_score_link"]
+    \    Sleep    4
+
+Viewing Patient Record
+    Click Element    @{input_box}[0]
+    Click Element    //*[@id="score_history_results"]//li[@id="hlist_all"]
+    Click Element    //*[@id='@{patient_list}[0]_list']//span[1]
+
+Deleting Patient Record
+    Click Element    @{input_box}[0]
+    Click Element    //*[@id="score_history_results"]//li[@id="hlist_all"]
+    Click Element    //*[@id='@{patient_list}[1]_list']//img
+
+Updating Patient Record
+    Sleep    6
+    Click Element    //*[@id="edit_score_link"]
+    Input Text    @{input_numOnly}[1]    180
+    Click Element    //*[@id="submit_score_form"]/input[1]
+    Wait Until Element Is Visible    //*[@id="main_chart" and @style="display: inline;"]
